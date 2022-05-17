@@ -1,0 +1,26 @@
+{
+  "rentmanagementApp": {
+    "generateBill": {
+      "home": {
+        "title": "GenerateBills",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Generate Bill बनाएँ",
+        "createOrEditLabel": "Generate Bill बनाएँ या संपादित करें",
+        "notFound": "No Generate Bills found"
+      },
+      "created": "एक नया Generate Bill [identifier: {{ param }}] तैयार है",
+      "updated": "एक Generate Bill [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Generate Bill [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Generate Bill [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Generate Bill"
+      },
+      "id": "ID",
+      "amountPending": "Amount Pending",
+      "sendNotification": "Send Notification",
+      "tenant": "Tenant"
+    }
+  }
+}

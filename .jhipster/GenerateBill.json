@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20220517165749",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "generate_bill",
+  "fields": [
+    {
+      "fieldName": "amountPending",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "sendNotification",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "GenerateBill",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "tenant",
+      "ownerSide": false,
+      "relationshipName": "tenant",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}

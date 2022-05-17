@@ -1,0 +1,25 @@
+{
+  "rentmanagementApp": {
+    "owner": {
+      "home": {
+        "title": "Owners",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Owner बनाएँ",
+        "createOrEditLabel": "Owner बनाएँ या संपादित करें",
+        "notFound": "No Owners found"
+      },
+      "created": "एक नया Owner [identifier: {{ param }}] तैयार है",
+      "updated": "एक Owner [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Owner [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Owner [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Owner"
+      },
+      "id": "ID",
+      "phoneNumber": "Phone Number",
+      "emailAddress": "Email Address"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "rentmanagementApp": {
+    "building": {
+      "home": {
+        "title": "Buildings",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Building बनाएँ",
+        "createOrEditLabel": "Building बनाएँ या संपादित करें",
+        "notFound": "No Buildings found"
+      },
+      "created": "एक नया Building [identifier: {{ param }}] तैयार है",
+      "updated": "एक Building [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Building [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Building [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Building"
+      },
+      "id": "ID",
+      "buildingName": "Building Name",
+      "addressId": "Address Id",
+      "buildings": "Buildings"
+    }
+  }
+}

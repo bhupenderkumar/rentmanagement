@@ -1,0 +1,116 @@
+<div>
+  <h2 id="page-heading" data-cy="TenantHeading">
+    <span jhiTranslate="rentmanagementApp.tenant.home.title">Tenants</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="rentmanagementApp.tenant.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-tenant"
+        [routerLink]="['/tenant/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="rentmanagementApp.tenant.home.createLabel"> Create a new Tenant </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="tenants?.length === 0">
+    <span jhiTranslate="rentmanagementApp.tenant.home.notFound">No tenants found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="tenants && tenants.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.tenantName">Tenant Name</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.addressProff">Address Proff</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.numberofFamilyMembers">Numberof Family Members</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.phoneNumber">Phone Number</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.rentStartDate">Rent Start Date</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.rentAmount">Rent Amount</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.electricityUnitRate">Electricity Unit Rate</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.startingElectricityUnit">Starting Electricity Unit</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.anyOtherDetails">Any Other Details</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.sendNotification">Send Notification</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.emailAddress">Email Address</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.emergencyContactNumber">Emergency Contact Number</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.outStandingAmount">Out Standing Amount</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.monthEndCalculation">Month End Calculation</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.calculateOnDate">Calculate On Date</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.tenant">Tenant</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.location">Location</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tenant of tenants; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/tenant', tenant.id, 'view']">{{ tenant.id }}</a>
+          </td>
+          <td>{{ tenant.tenantName }}</td>
+          <td>
+            <a
+              *ngIf="tenant.addressProff"
+              (click)="openFile(tenant.addressProff, tenant.addressProffContentType)"
+              jhiTranslate="entity.action.open"
+              >open</a
+            >
+            <span *ngIf="tenant.addressProff">{{ tenant.addressProffContentType }}, {{ byteSize(tenant.addressProff) }}</span>
+          </td>
+          <td>{{ tenant.numberofFamilyMembers }}</td>
+          <td>{{ tenant.phoneNumber }}</td>
+          <td>{{ tenant.rentStartDate | formatMediumDate }}</td>
+          <td>{{ tenant.rentAmount }}</td>
+          <td>{{ tenant.electricityUnitRate }}</td>
+          <td>{{ tenant.startingElectricityUnit }}</td>
+          <td>{{ tenant.anyOtherDetails }}</td>
+          <td>{{ tenant.sendNotification }}</td>
+          <td>{{ tenant.emailAddress }}</td>
+          <td>{{ tenant.emergencyContactNumber }}</td>
+          <td>{{ tenant.outStandingAmount }}</td>
+          <td>{{ tenant.monthEndCalculation }}</td>
+          <td>{{ tenant.calculateOnDate }}</td>
+          <td>
+            <div *ngIf="tenant.tenant">
+              <a [routerLink]="['/generate-bill', tenant.tenant?.id, 'view']">{{ tenant.tenant?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="tenant.location">
+              <a [routerLink]="['/location', tenant.location?.id, 'view']">{{ tenant.location?.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/tenant', tenant.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/tenant', tenant.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(tenant)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

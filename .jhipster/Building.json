@@ -1,0 +1,37 @@
+{
+  "applications": "*",
+  "changelogDate": "20220517155029",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "building",
+  "fields": [
+    {
+      "fieldName": "buildingName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Building",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "building",
+      "ownerSide": true,
+      "relationshipName": "addressId",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "building",
+      "relationshipName": "buildings",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "no"
+}

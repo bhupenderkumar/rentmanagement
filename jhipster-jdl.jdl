@@ -1,0 +1,65 @@
+
+
+
+entity Building {
+	buildingName String required 
+}
+relationship OneToMany{
+  Building{buildings required} to Room{building required}
+  Tenant{rooms required} to Room{tenants}
+}
+relationship OneToOne{
+  Tenant{tenant} to GenerateBill{tenant}
+  Tenant{location} to Location
+  Building{addressId required} to Location
+  
+}
+
+
+
+entity Room {
+	roomName String required
+    floor String
+}
+
+entity Location {
+	streetAddress String,
+	postalCode String,
+	city String,
+	stateProvince String,
+    country Country 
+}
+enum Country {
+INDIA
+}
+
+entity Tenant{
+   tenantName String required
+   addressProff Blob required
+   numberofFamilyMembers Integer
+   phoneNumber String required
+   rentStartDate LocalDate required 
+   rentAmount Double required
+   electricityUnitRate Integer required
+   startingElectricityUnit Double required
+   anyOtherDetails String maxlength(500)
+   sendNotification Boolean
+   emailAddress String 
+   emergencyContactNumber String 
+   outStandingAmount Double 
+   monthEndCalculation Boolean
+   calculateOnDate Boolean
+   
+}
+entity GenerateBill {
+    amountPending Double
+    sendNotification Boolean
+    
+}
+
+entity Owner {
+	phoneNumber String required
+    emailAddress String 
+}
+
+

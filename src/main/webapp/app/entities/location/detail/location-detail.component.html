@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="location">
+      <h2 data-cy="locationDetailsHeading"><span jhiTranslate="rentmanagementApp.location.detail.title">Location</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ location.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.location.streetAddress">Street Address</span></dt>
+        <dd>
+          <span>{{ location.streetAddress }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.location.postalCode">Postal Code</span></dt>
+        <dd>
+          <span>{{ location.postalCode }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.location.city">City</span></dt>
+        <dd>
+          <span>{{ location.city }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.location.stateProvince">State Province</span></dt>
+        <dd>
+          <span>{{ location.stateProvince }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.location.country">Country</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'rentmanagementApp.Country.' + location.country }}">{{ location.country }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/location', location.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

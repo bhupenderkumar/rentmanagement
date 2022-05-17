@@ -1,0 +1,41 @@
+{
+  "rentmanagementApp": {
+    "tenant": {
+      "home": {
+        "title": "Tenants",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Tenant",
+        "createOrEditLabel": "Create or edit a Tenant",
+        "notFound": "No Tenants found"
+      },
+      "created": "A new Tenant is created with identifier {{ param }}",
+      "updated": "A Tenant is updated with identifier {{ param }}",
+      "deleted": "A Tenant is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tenant {{ id }}?"
+      },
+      "detail": {
+        "title": "Tenant"
+      },
+      "id": "ID",
+      "tenantName": "Tenant Name",
+      "addressProff": "Address Proff",
+      "numberofFamilyMembers": "Numberof Family Members",
+      "phoneNumber": "Phone Number",
+      "rentStartDate": "Rent Start Date",
+      "rentAmount": "Rent Amount",
+      "electricityUnitRate": "Electricity Unit Rate",
+      "startingElectricityUnit": "Starting Electricity Unit",
+      "anyOtherDetails": "Any Other Details",
+      "sendNotification": "Send Notification",
+      "emailAddress": "Email Address",
+      "emergencyContactNumber": "Emergency Contact Number",
+      "outStandingAmount": "Out Standing Amount",
+      "monthEndCalculation": "Month End Calculation",
+      "calculateOnDate": "Calculate On Date",
+      "tenant": "Tenant",
+      "location": "Location",
+      "rooms": "Rooms"
+    }
+  }
+}

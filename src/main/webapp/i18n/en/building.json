@@ -1,0 +1,26 @@
+{
+  "rentmanagementApp": {
+    "building": {
+      "home": {
+        "title": "Buildings",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Building",
+        "createOrEditLabel": "Create or edit a Building",
+        "notFound": "No Buildings found"
+      },
+      "created": "A new Building is created with identifier {{ param }}",
+      "updated": "A Building is updated with identifier {{ param }}",
+      "deleted": "A Building is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Building {{ id }}?"
+      },
+      "detail": {
+        "title": "Building"
+      },
+      "id": "ID",
+      "buildingName": "Building Name",
+      "addressId": "Address Id",
+      "buildings": "Buildings"
+    }
+  }
+}

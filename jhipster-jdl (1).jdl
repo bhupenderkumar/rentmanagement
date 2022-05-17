@@ -1,0 +1,53 @@
+
+entity Building {
+	buildingName String
+}
+
+entity Room {
+	roomName String
+    floor String
+    
+}
+
+entity Location {
+	streetAddress String,
+	postalCode String,
+	city String,
+	stateProvince String
+}
+
+entity Tenant{
+   tenantName String required
+   addressProff Blob required
+   numberofFamilyMembers Integer
+   phoneNumber String required
+   rentStartDate LocalDate required 
+   rentAmount Double required
+   electricityUnitRate Integer required
+   startingElectricityRate Double required
+   anyOtherDetails String maxlength(500)
+   sendNotification Boolean
+   emailAddress String 
+   emergencyContactNumber String 
+   outStandingAmount Double  
+}
+
+entity Owner {
+	phoneNumber String required
+    emailAddress String 
+}
+
+
+relationship OneToOne {
+	Building{building} to Room
+    Location{address} to Tenant
+    Location{buildingAddress} to Building
+    Room{room} to Tenant
+    
+    
+}
+relationship OneToMany {
+    Owner{owner} to Building
+    
+}
+

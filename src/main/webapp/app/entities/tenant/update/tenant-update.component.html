@@ -1,0 +1,414 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-tenant-heading" data-cy="TenantCreateUpdateHeading" jhiTranslate="rentmanagementApp.tenant.home.createOrEditLabel">
+        Create or edit a Tenant
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.tenantName" for="field_tenantName">Tenant Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="tenantName"
+            id="field_tenantName"
+            data-cy="tenantName"
+            formControlName="tenantName"
+          />
+          <div *ngIf="editForm.get('tenantName')!.invalid && (editForm.get('tenantName')!.dirty || editForm.get('tenantName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('tenantName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.addressProff" for="field_addressProff">Address Proff</label>
+          <div>
+            <div *ngIf="editForm.get('addressProff')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-start"
+                (click)="openFile(editForm.get('addressProff')!.value, editForm.get('addressProffContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-start"
+                >{{ editForm.get('addressProffContentType')!.value }}, {{ byteSize(editForm.get('addressProff')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="editForm.patchValue({ addressProff: null }); editForm.patchValue({ addressProffContentType: null })"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_addressProff"
+              data-cy="addressProff"
+              (change)="setFileData($event, 'addressProff', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            name="addressProff"
+            id="field_addressProff"
+            data-cy="addressProff"
+            formControlName="addressProff"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            name="addressProffContentType"
+            id="field_addressProffContentType"
+            formControlName="addressProffContentType"
+          />
+          <div
+            *ngIf="editForm.get('addressProff')!.invalid && (editForm.get('addressProff')!.dirty || editForm.get('addressProff')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('addressProff')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.numberofFamilyMembers" for="field_numberofFamilyMembers"
+            >Numberof Family Members</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="numberofFamilyMembers"
+            id="field_numberofFamilyMembers"
+            data-cy="numberofFamilyMembers"
+            formControlName="numberofFamilyMembers"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.phoneNumber" for="field_phoneNumber">Phone Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="phoneNumber"
+            id="field_phoneNumber"
+            data-cy="phoneNumber"
+            formControlName="phoneNumber"
+          />
+          <div *ngIf="editForm.get('phoneNumber')!.invalid && (editForm.get('phoneNumber')!.dirty || editForm.get('phoneNumber')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('phoneNumber')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.rentStartDate" for="field_rentStartDate">Rent Start Date</label>
+          <div class="input-group">
+            <input
+              id="field_rentStartDate"
+              data-cy="rentStartDate"
+              type="text"
+              class="form-control"
+              name="rentStartDate"
+              ngbDatepicker
+              #rentStartDateDp="ngbDatepicker"
+              formControlName="rentStartDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="rentStartDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+          <div
+            *ngIf="
+              editForm.get('rentStartDate')!.invalid && (editForm.get('rentStartDate')!.dirty || editForm.get('rentStartDate')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('rentStartDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.rentAmount" for="field_rentAmount">Rent Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="rentAmount"
+            id="field_rentAmount"
+            data-cy="rentAmount"
+            formControlName="rentAmount"
+          />
+          <div *ngIf="editForm.get('rentAmount')!.invalid && (editForm.get('rentAmount')!.dirty || editForm.get('rentAmount')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('rentAmount')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('rentAmount')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.electricityUnitRate" for="field_electricityUnitRate"
+            >Electricity Unit Rate</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="electricityUnitRate"
+            id="field_electricityUnitRate"
+            data-cy="electricityUnitRate"
+            formControlName="electricityUnitRate"
+          />
+          <div
+            *ngIf="
+              editForm.get('electricityUnitRate')!.invalid &&
+              (editForm.get('electricityUnitRate')!.dirty || editForm.get('electricityUnitRate')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('electricityUnitRate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('electricityUnitRate')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.startingElectricityUnit" for="field_startingElectricityUnit"
+            >Starting Electricity Unit</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="startingElectricityUnit"
+            id="field_startingElectricityUnit"
+            data-cy="startingElectricityUnit"
+            formControlName="startingElectricityUnit"
+          />
+          <div
+            *ngIf="
+              editForm.get('startingElectricityUnit')!.invalid &&
+              (editForm.get('startingElectricityUnit')!.dirty || editForm.get('startingElectricityUnit')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startingElectricityUnit')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('startingElectricityUnit')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.anyOtherDetails" for="field_anyOtherDetails"
+            >Any Other Details</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="anyOtherDetails"
+            id="field_anyOtherDetails"
+            data-cy="anyOtherDetails"
+            formControlName="anyOtherDetails"
+          />
+          <div
+            *ngIf="
+              editForm.get('anyOtherDetails')!.invalid &&
+              (editForm.get('anyOtherDetails')!.dirty || editForm.get('anyOtherDetails')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('anyOtherDetails')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 500 }"
+            >
+              This field cannot be longer than 500 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.sendNotification" for="field_sendNotification"
+            >Send Notification</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="sendNotification"
+            id="field_sendNotification"
+            data-cy="sendNotification"
+            formControlName="sendNotification"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.emailAddress" for="field_emailAddress">Email Address</label>
+          <input
+            type="text"
+            class="form-control"
+            name="emailAddress"
+            id="field_emailAddress"
+            data-cy="emailAddress"
+            formControlName="emailAddress"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.emergencyContactNumber" for="field_emergencyContactNumber"
+            >Emergency Contact Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="emergencyContactNumber"
+            id="field_emergencyContactNumber"
+            data-cy="emergencyContactNumber"
+            formControlName="emergencyContactNumber"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.outStandingAmount" for="field_outStandingAmount"
+            >Out Standing Amount</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="outStandingAmount"
+            id="field_outStandingAmount"
+            data-cy="outStandingAmount"
+            formControlName="outStandingAmount"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.monthEndCalculation" for="field_monthEndCalculation"
+            >Month End Calculation</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="monthEndCalculation"
+            id="field_monthEndCalculation"
+            data-cy="monthEndCalculation"
+            formControlName="monthEndCalculation"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.calculateOnDate" for="field_calculateOnDate"
+            >Calculate On Date</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="calculateOnDate"
+            id="field_calculateOnDate"
+            data-cy="calculateOnDate"
+            formControlName="calculateOnDate"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.tenant" for="field_tenant">Tenant</label>
+          <select class="form-control" id="field_tenant" data-cy="tenant" name="tenant" formControlName="tenant">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="generateBillOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : generateBillOption"
+              *ngFor="let generateBillOption of tenantsCollection; trackBy: trackGenerateBillById"
+            >
+              {{ generateBillOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.location" for="field_location">Location</label>
+          <select class="form-control" id="field_location" data-cy="location" name="location" formControlName="location">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="locationOption.id === editForm.get('location')!.value?.id ? editForm.get('location')!.value : locationOption"
+              *ngFor="let locationOption of locationsCollection; trackBy: trackLocationById"
+            >
+              {{ locationOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

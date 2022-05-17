@@ -1,0 +1,27 @@
+{
+  "rentmanagementApp": {
+    "room": {
+      "home": {
+        "title": "Rooms",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Room बनाएँ",
+        "createOrEditLabel": "Room बनाएँ या संपादित करें",
+        "notFound": "No Rooms found"
+      },
+      "created": "एक नया Room [identifier: {{ param }}] तैयार है",
+      "updated": "एक Room [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Room [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Room [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Room"
+      },
+      "id": "ID",
+      "roomName": "Room Name",
+      "floor": "Floor",
+      "building": "Building",
+      "tenants": "Tenants"
+    }
+  }
+}

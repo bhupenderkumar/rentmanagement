@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20220517155030",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "room",
+  "fields": [
+    {
+      "fieldName": "roomName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "floor",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Room",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "building",
+      "otherEntityRelationshipName": "buildings",
+      "relationshipName": "building",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "tenant",
+      "otherEntityRelationshipName": "rooms",
+      "relationshipName": "tenants",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

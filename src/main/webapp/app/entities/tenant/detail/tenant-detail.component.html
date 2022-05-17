@@ -1,0 +1,103 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="tenant">
+      <h2 data-cy="tenantDetailsHeading"><span jhiTranslate="rentmanagementApp.tenant.detail.title">Tenant</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ tenant.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.tenantName">Tenant Name</span></dt>
+        <dd>
+          <span>{{ tenant.tenantName }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.addressProff">Address Proff</span></dt>
+        <dd>
+          <div *ngIf="tenant.addressProff">
+            <a (click)="openFile(tenant.addressProff, tenant.addressProffContentType)" jhiTranslate="entity.action.open">open</a>
+            {{ tenant.addressProffContentType }}, {{ byteSize(tenant.addressProff) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.numberofFamilyMembers">Numberof Family Members</span></dt>
+        <dd>
+          <span>{{ tenant.numberofFamilyMembers }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.phoneNumber">Phone Number</span></dt>
+        <dd>
+          <span>{{ tenant.phoneNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.rentStartDate">Rent Start Date</span></dt>
+        <dd>
+          <span>{{ tenant.rentStartDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.rentAmount">Rent Amount</span></dt>
+        <dd>
+          <span>{{ tenant.rentAmount }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.electricityUnitRate">Electricity Unit Rate</span></dt>
+        <dd>
+          <span>{{ tenant.electricityUnitRate }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.startingElectricityUnit">Starting Electricity Unit</span></dt>
+        <dd>
+          <span>{{ tenant.startingElectricityUnit }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.anyOtherDetails">Any Other Details</span></dt>
+        <dd>
+          <span>{{ tenant.anyOtherDetails }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.sendNotification">Send Notification</span></dt>
+        <dd>
+          <span>{{ tenant.sendNotification }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.emailAddress">Email Address</span></dt>
+        <dd>
+          <span>{{ tenant.emailAddress }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.emergencyContactNumber">Emergency Contact Number</span></dt>
+        <dd>
+          <span>{{ tenant.emergencyContactNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.outStandingAmount">Out Standing Amount</span></dt>
+        <dd>
+          <span>{{ tenant.outStandingAmount }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.monthEndCalculation">Month End Calculation</span></dt>
+        <dd>
+          <span>{{ tenant.monthEndCalculation }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.calculateOnDate">Calculate On Date</span></dt>
+        <dd>
+          <span>{{ tenant.calculateOnDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.tenant">Tenant</span></dt>
+        <dd>
+          <div *ngIf="tenant.tenant">
+            <a [routerLink]="['/generate-bill', tenant.tenant?.id, 'view']">{{ tenant.tenant?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.location">Location</span></dt>
+        <dd>
+          <div *ngIf="tenant.location">
+            <a [routerLink]="['/location', tenant.location?.id, 'view']">{{ tenant.location?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/tenant', tenant.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

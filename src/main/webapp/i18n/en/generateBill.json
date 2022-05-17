@@ -1,0 +1,26 @@
+{
+  "rentmanagementApp": {
+    "generateBill": {
+      "home": {
+        "title": "Generate Bills",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Generate Bill",
+        "createOrEditLabel": "Create or edit a Generate Bill",
+        "notFound": "No Generate Bills found"
+      },
+      "created": "A new Generate Bill is created with identifier {{ param }}",
+      "updated": "A Generate Bill is updated with identifier {{ param }}",
+      "deleted": "A Generate Bill is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Generate Bill {{ id }}?"
+      },
+      "detail": {
+        "title": "Generate Bill"
+      },
+      "id": "ID",
+      "amountPending": "Amount Pending",
+      "sendNotification": "Send Notification",
+      "tenant": "Tenant"
+    }
+  }
+}

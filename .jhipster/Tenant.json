@@ -1,0 +1,108 @@
+{
+  "applications": "*",
+  "changelogDate": "20220517155032",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tenant",
+  "fields": [
+    {
+      "fieldName": "tenantName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "addressProff",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "numberofFamilyMembers",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "rentStartDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "rentAmount",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "electricityUnitRate",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "startingElectricityUnit",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "anyOtherDetails",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "500"
+    },
+    {
+      "fieldName": "sendNotification",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "emailAddress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "emergencyContactNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "outStandingAmount",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "monthEndCalculation",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "calculateOnDate",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Tenant",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "generateBill",
+      "otherEntityRelationshipName": "tenant",
+      "ownerSide": true,
+      "relationshipName": "tenant",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "tenant",
+      "ownerSide": true,
+      "relationshipName": "location",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "tenants",
+      "relationshipName": "rooms",
+      "relationshipType": "one-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "no"
+}

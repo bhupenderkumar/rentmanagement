@@ -1,0 +1,41 @@
+{
+  "rentmanagementApp": {
+    "tenant": {
+      "home": {
+        "title": "Tenants",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Tenant बनाएँ",
+        "createOrEditLabel": "Tenant बनाएँ या संपादित करें",
+        "notFound": "No Tenants found"
+      },
+      "created": "एक नया Tenant [identifier: {{ param }}] तैयार है",
+      "updated": "एक Tenant [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Tenant [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Tenant [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Tenant"
+      },
+      "id": "ID",
+      "tenantName": "Tenant Name",
+      "addressProff": "Address Proff",
+      "numberofFamilyMembers": "Numberof Family Members",
+      "phoneNumber": "Phone Number",
+      "rentStartDate": "Rent Start Date",
+      "rentAmount": "Rent Amount",
+      "electricityUnitRate": "Electricity Unit Rate",
+      "startingElectricityUnit": "Starting Electricity Unit",
+      "anyOtherDetails": "Any Other Details",
+      "sendNotification": "Send Notification",
+      "emailAddress": "Email Address",
+      "emergencyContactNumber": "Emergency Contact Number",
+      "outStandingAmount": "Out Standing Amount",
+      "monthEndCalculation": "Month End Calculation",
+      "calculateOnDate": "Calculate On Date",
+      "tenant": "Tenant",
+      "location": "Location",
+      "rooms": "Rooms"
+    }
+  }
+}
