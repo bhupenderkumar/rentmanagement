@@ -48,6 +48,14 @@ public class CacheConfiguration {
             createCache(cm, com.rentmanagement.domain.User.class.getName());
             createCache(cm, com.rentmanagement.domain.Authority.class.getName());
             createCache(cm, com.rentmanagement.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.rentmanagement.domain.Building.class.getName());
+            createCache(cm, com.rentmanagement.domain.Room.class.getName());
+            createCache(cm, com.rentmanagement.domain.Location.class.getName());
+            createCache(cm, com.rentmanagement.domain.Tenant.class.getName());
+            createCache(cm, com.rentmanagement.domain.Owner.class.getName());
+            createCache(cm, com.rentmanagement.domain.Owner.class.getName() + ".owners");
+            createCache(cm, com.rentmanagement.domain.Building.class.getName() + ".buildings");
+            createCache(cm, com.rentmanagement.domain.Tenant.class.getName() + ".rooms");
             // jhipster-needle-ehcache-add-entry
         };
     }
