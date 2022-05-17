@@ -12,6 +12,7 @@
         "location": "Location",
         "tenant": "Tenant",
         "owner": "Owner",
+        "generateBill": "Generate Bill",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -56,6 +56,7 @@ public class CacheConfiguration {
             createCache(cm, com.rentmanagement.domain.Owner.class.getName() + ".owners");
             createCache(cm, com.rentmanagement.domain.Building.class.getName() + ".buildings");
             createCache(cm, com.rentmanagement.domain.Tenant.class.getName() + ".rooms");
+            createCache(cm, com.rentmanagement.domain.GenerateBill.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

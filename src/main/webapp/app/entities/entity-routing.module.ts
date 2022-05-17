@@ -29,6 +29,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'rentmanagementApp.owner.home.title' },
         loadChildren: () => import('./owner/owner.module').then(m => m.OwnerModule),
       },
+      {
+        path: 'generate-bill',
+        data: { pageTitle: 'rentmanagementApp.generateBill.home.title' },
+        loadChildren: () => import('./generate-bill/generate-bill.module').then(m => m.GenerateBillModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],
