@@ -264,7 +264,7 @@ class TenantResourceIT {
         em.detach(updatedTenant);
 
         // Update the User with new association value
-        updatedTenant.setUser();
+        updatedTenant.setUser(tenant.getUser());
 
         // Update the entity
         restTenantMockMvc
