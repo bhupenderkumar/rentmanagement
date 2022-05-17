@@ -7,9 +7,10 @@ entity Building {
 relationship OneToMany{
   Building{buildings required} to Room{building required}
   Tenant{rooms required} to Room{tenants}
+  Tenant to GenerateBill{tenant required}
 }
 relationship OneToOne{
-  Tenant{tenant} to GenerateBill{tenant}
+  
   Tenant{location} to Location
   Building{addressId required} to Location
   
@@ -54,6 +55,7 @@ entity Tenant{
 entity GenerateBill {
     amountPending Double
     sendNotification Boolean
+    electricityUnit Double
     
 }
 

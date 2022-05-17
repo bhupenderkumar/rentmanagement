@@ -368,19 +368,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.tenant" for="field_tenant">Tenant</label>
-          <select class="form-control" id="field_tenant" data-cy="tenant" name="tenant" formControlName="tenant">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="generateBillOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : generateBillOption"
-              *ngFor="let generateBillOption of tenantsCollection; trackBy: trackGenerateBillById"
-            >
-              {{ generateBillOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="rentmanagementApp.tenant.location" for="field_location">Location</label>
           <select class="form-control" id="field_location" data-cy="location" name="location" formControlName="location">
             <option [ngValue]="null"></option>
@@ -389,6 +376,19 @@
               *ngFor="let locationOption of locationsCollection; trackBy: trackLocationById"
             >
               {{ locationOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.user" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.login }}
             </option>
           </select>
         </div>

@@ -3,6 +3,7 @@ package com.rentmanagement.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,8 +29,12 @@ public class GenerateBill implements Serializable {
     @Column(name = "send_notification")
     private Boolean sendNotification;
 
-    @JsonIgnoreProperties(value = { "tenant", "location", "rooms" }, allowSetters = true)
-    @OneToOne(mappedBy = "tenant")
+    @Column(name = "electricity_unit")
+    private Double electricityUnit;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "location", "rooms", "generateBills", "user" }, allowSetters = true)
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -73,17 +78,24 @@ public class GenerateBill implements Serializable {
         this.sendNotification = sendNotification;
     }
 
+    public Double getElectricityUnit() {
+        return this.electricityUnit;
+    }
+
+    public GenerateBill electricityUnit(Double electricityUnit) {
+        this.setElectricityUnit(electricityUnit);
+        return this;
+    }
+
+    public void setElectricityUnit(Double electricityUnit) {
+        this.electricityUnit = electricityUnit;
+    }
+
     public Tenant getTenant() {
         return this.tenant;
     }
 
     public void setTenant(Tenant tenant) {
-        if (this.tenant != null) {
-            this.tenant.setTenant(null);
-        }
-        if (tenant != null) {
-            tenant.setTenant(this);
-        }
         this.tenant = tenant;
     }
 
@@ -118,6 +130,7 @@ public class GenerateBill implements Serializable {
             "id=" + getId() +
             ", amountPending=" + getAmountPending() +
             ", sendNotification='" + getSendNotification() + "'" +
+            ", electricityUnit=" + getElectricityUnit() +
             "}";
     }
 }

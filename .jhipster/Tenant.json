@@ -83,13 +83,6 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityName": "generateBill",
-      "otherEntityRelationshipName": "tenant",
-      "ownerSide": true,
-      "relationshipName": "tenant",
-      "relationshipType": "one-to-one"
-    },
-    {
       "otherEntityName": "location",
       "otherEntityRelationshipName": "tenant",
       "ownerSide": true,
@@ -102,6 +95,21 @@
       "relationshipName": "rooms",
       "relationshipType": "one-to-many",
       "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "generateBill",
+      "otherEntityRelationshipName": "tenant",
+      "relationshipName": "generateBill",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "id": true,
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "tenant",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "one-to-one"
     }
   ],
   "service": "no"

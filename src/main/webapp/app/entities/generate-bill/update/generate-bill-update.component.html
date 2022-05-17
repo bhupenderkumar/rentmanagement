@@ -44,6 +44,38 @@
             formControlName="sendNotification"
           />
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.generateBill.electricityUnit" for="field_electricityUnit"
+            >Electricity Unit</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="electricityUnit"
+            id="field_electricityUnit"
+            data-cy="electricityUnit"
+            formControlName="electricityUnit"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.generateBill.tenant" for="field_tenant">Tenant</label>
+          <select class="form-control" id="field_tenant" data-cy="tenant" name="tenant" formControlName="tenant">
+            <option *ngIf="!editForm.get('tenant')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="tenantOption.id === editForm.get('tenant')!.value?.id ? editForm.get('tenant')!.value : tenantOption"
+              *ngFor="let tenantOption of tenantsSharedCollection; trackBy: trackTenantById"
+            >
+              {{ tenantOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['tenant'])!.invalid && (editForm.get(['tenant'])!.dirty || editForm.get(['tenant'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['tenant'])?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
       </div>
 
       <div>

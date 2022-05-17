@@ -224,7 +224,7 @@ describe('Tenant Service', () => {
       });
 
       it('should add only unique Tenant to an array', () => {
-        const tenantArray: ITenant[] = [{ id: 123 }, { id: 456 }, { id: 49805 }];
+        const tenantArray: ITenant[] = [{ id: 123 }, { id: 456 }, { id: 13905 }];
         const tenantCollection: ITenant[] = [{ id: 123 }];
         expectedResult = service.addTenantToCollectionIfMissing(tenantCollection, ...tenantArray);
         expect(expectedResult).toHaveLength(3);

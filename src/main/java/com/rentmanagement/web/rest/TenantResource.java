@@ -2,6 +2,7 @@ package com.rentmanagement.web.rest;
 
 import com.rentmanagement.domain.Tenant;
 import com.rentmanagement.repository.TenantRepository;
+import com.rentmanagement.repository.UserRepository;
 import com.rentmanagement.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +37,11 @@ public class TenantResource {
 
     private final TenantRepository tenantRepository;
 
-    public TenantResource(TenantRepository tenantRepository) {
+    private final UserRepository userRepository;
+
+    public TenantResource(TenantRepository tenantRepository, UserRepository userRepository) {
         this.tenantRepository = tenantRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -53,6 +57,11 @@ public class TenantResource {
         if (tenant.getId() != null) {
             throw new BadRequestAlertException("A new tenant cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (Objects.isNull(tenant.getUser())) {
+            throw new BadRequestAlertException("Invalid association value provided", ENTITY_NAME, "null");
+        }
+        Long userId = tenant.getUser().getId();
+        userRepository.findById(userId).ifPresent(tenant::user);
         Tenant result = tenantRepository.save(tenant);
         return ResponseEntity
             .created(new URI("/api/tenants/" + result.getId()))
@@ -187,12 +196,14 @@ public class TenantResource {
     /**
      * {@code GET  /tenants} : get all the tenants.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tenants in body.
      */
     @GetMapping("/tenants")
-    public List<Tenant> getAllTenants() {
+    @Transactional(readOnly = true)
+    public List<Tenant> getAllTenants(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Tenants");
-        return tenantRepository.findAll();
+        return tenantRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -202,9 +213,10 @@ public class TenantResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tenant, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/tenants/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<Tenant> getTenant(@PathVariable Long id) {
         log.debug("REST request to get Tenant : {}", id);
-        Optional<Tenant> tenant = tenantRepository.findById(id);
+        Optional<Tenant> tenant = tenantRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(tenant);
     }
 

@@ -22,6 +22,16 @@
         <dd>
           <span>{{ generateBill.sendNotification }}</span>
         </dd>
+        <dt><span jhiTranslate="rentmanagementApp.generateBill.electricityUnit">Electricity Unit</span></dt>
+        <dd>
+          <span>{{ generateBill.electricityUnit }}</span>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.generateBill.tenant">Tenant</span></dt>
+        <dd>
+          <div *ngIf="generateBill.tenant">
+            <a [routerLink]="['/tenant', generateBill.tenant?.id, 'view']">{{ generateBill.tenant?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

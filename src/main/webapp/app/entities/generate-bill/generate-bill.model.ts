@@ -4,7 +4,8 @@ export interface IGenerateBill {
   id?: number;
   amountPending?: number | null;
   sendNotification?: boolean | null;
-  tenant?: ITenant | null;
+  electricityUnit?: number | null;
+  tenant?: ITenant;
 }
 
 export class GenerateBill implements IGenerateBill {
@@ -12,7 +13,8 @@ export class GenerateBill implements IGenerateBill {
     public id?: number,
     public amountPending?: number | null,
     public sendNotification?: boolean | null,
-    public tenant?: ITenant | null
+    public electricityUnit?: number | null,
+    public tenant?: ITenant
   ) {
     this.sendNotification = this.sendNotification ?? false;
   }

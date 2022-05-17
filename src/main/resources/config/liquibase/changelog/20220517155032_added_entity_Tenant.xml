@@ -62,9 +62,6 @@
             <column name="calculate_on_date" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="tenant_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tenant__tenant_id" />
-            </column>
             <column name="location_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_tenant__location_id" />
             </column>

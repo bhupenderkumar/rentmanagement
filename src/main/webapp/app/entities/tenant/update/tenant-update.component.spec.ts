@@ -8,10 +8,11 @@ import { of, Subject, from } from 'rxjs';
 
 import { TenantService } from '../service/tenant.service';
 import { ITenant, Tenant } from '../tenant.model';
-import { IGenerateBill } from 'app/entities/generate-bill/generate-bill.model';
-import { GenerateBillService } from 'app/entities/generate-bill/service/generate-bill.service';
 import { ILocation } from 'app/entities/location/location.model';
 import { LocationService } from 'app/entities/location/service/location.service';
+
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 
 import { TenantUpdateComponent } from './tenant-update.component';
 
@@ -20,8 +21,8 @@ describe('Tenant Management Update Component', () => {
   let fixture: ComponentFixture<TenantUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let tenantService: TenantService;
-  let generateBillService: GenerateBillService;
   let locationService: LocationService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -43,31 +44,13 @@ describe('Tenant Management Update Component', () => {
     fixture = TestBed.createComponent(TenantUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     tenantService = TestBed.inject(TenantService);
-    generateBillService = TestBed.inject(GenerateBillService);
     locationService = TestBed.inject(LocationService);
+    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call tenant query and add missing value', () => {
-      const tenant: ITenant = { id: 456 };
-      const tenant: IGenerateBill = { id: 88991 };
-      tenant.tenant = tenant;
-
-      const tenantCollection: IGenerateBill[] = [{ id: 19395 }];
-      jest.spyOn(generateBillService, 'query').mockReturnValue(of(new HttpResponse({ body: tenantCollection })));
-      const expectedCollection: IGenerateBill[] = [tenant, ...tenantCollection];
-      jest.spyOn(generateBillService, 'addGenerateBillToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ tenant });
-      comp.ngOnInit();
-
-      expect(generateBillService.query).toHaveBeenCalled();
-      expect(generateBillService.addGenerateBillToCollectionIfMissing).toHaveBeenCalledWith(tenantCollection, tenant);
-      expect(comp.tenantsCollection).toEqual(expectedCollection);
-    });
-
     it('Should call location query and add missing value', () => {
       const tenant: ITenant = { id: 456 };
       const location: ILocation = { id: 56489 };
@@ -86,19 +69,38 @@ describe('Tenant Management Update Component', () => {
       expect(comp.locationsCollection).toEqual(expectedCollection);
     });
 
+    it('Should call User query and add missing value', () => {
+      const tenant: ITenant = { id: 456 };
+      const user: IUser = { id: 29209 };
+      tenant.user = user;
+
+      const userCollection: IUser[] = [{ id: 78936 }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ tenant });
+      comp.ngOnInit();
+
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const tenant: ITenant = { id: 456 };
-      const tenant: IGenerateBill = { id: 7807 };
-      tenant.tenant = tenant;
       const location: ILocation = { id: 32001 };
       tenant.location = location;
+      const user: IUser = { id: 52572 };
+      tenant.user = user;
 
       activatedRoute.data = of({ tenant });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(tenant));
-      expect(comp.tenantsCollection).toContain(tenant);
       expect(comp.locationsCollection).toContain(location);
+      expect(comp.usersSharedCollection).toContain(user);
     });
   });
 
@@ -167,18 +169,18 @@ describe('Tenant Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
-    describe('trackGenerateBillById', () => {
-      it('Should return tracked GenerateBill primary key', () => {
-        const entity = { id: 123 };
-        const trackResult = comp.trackGenerateBillById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
-    });
-
     describe('trackLocationById', () => {
       it('Should return tracked Location primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackLocationById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
+    describe('trackUserById', () => {
+      it('Should return tracked User primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackUserById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

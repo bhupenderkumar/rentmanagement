@@ -23,6 +23,7 @@ describe('GenerateBill Service', () => {
       id: 0,
       amountPending: 0,
       sendNotification: false,
+      electricityUnit: 0,
     };
   });
 
@@ -60,6 +61,7 @@ describe('GenerateBill Service', () => {
           id: 1,
           amountPending: 1,
           sendNotification: true,
+          electricityUnit: 1,
         },
         elemDefault
       );
@@ -99,6 +101,7 @@ describe('GenerateBill Service', () => {
           id: 1,
           amountPending: 1,
           sendNotification: true,
+          electricityUnit: 1,
         },
         elemDefault
       );
@@ -150,7 +153,7 @@ describe('GenerateBill Service', () => {
       });
 
       it('should add only unique GenerateBill to an array', () => {
-        const generateBillArray: IGenerateBill[] = [{ id: 123 }, { id: 456 }, { id: 2235 }];
+        const generateBillArray: IGenerateBill[] = [{ id: 123 }, { id: 456 }, { id: 39178 }];
         const generateBillCollection: IGenerateBill[] = [{ id: 123 }];
         expectedResult = service.addGenerateBillToCollectionIfMissing(generateBillCollection, ...generateBillArray);
         expect(expectedResult).toHaveLength(3);

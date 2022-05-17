@@ -35,6 +35,8 @@
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="rentmanagementApp.generateBill.amountPending">Amount Pending</span></th>
           <th scope="col"><span jhiTranslate="rentmanagementApp.generateBill.sendNotification">Send Notification</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.generateBill.electricityUnit">Electricity Unit</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.generateBill.tenant">Tenant</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,6 +47,12 @@
           </td>
           <td>{{ generateBill.amountPending }}</td>
           <td>{{ generateBill.sendNotification }}</td>
+          <td>{{ generateBill.electricityUnit }}</td>
+          <td>
+            <div *ngIf="generateBill.tenant">
+              <a [routerLink]="['/tenant', generateBill.tenant?.id, 'view']">{{ generateBill.tenant?.id }}</a>
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

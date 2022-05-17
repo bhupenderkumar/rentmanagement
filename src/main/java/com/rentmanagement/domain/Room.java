@@ -36,7 +36,7 @@ public class Room implements Serializable {
     private Building building;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "tenant", "location", "rooms" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "location", "rooms", "generateBills", "user" }, allowSetters = true)
     private Tenant tenants;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

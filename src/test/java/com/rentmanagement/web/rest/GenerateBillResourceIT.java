@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.rentmanagement.IntegrationTest;
 import com.rentmanagement.domain.GenerateBill;
+import com.rentmanagement.domain.Tenant;
 import com.rentmanagement.repository.GenerateBillRepository;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +36,9 @@ class GenerateBillResourceIT {
     private static final Boolean DEFAULT_SEND_NOTIFICATION = false;
     private static final Boolean UPDATED_SEND_NOTIFICATION = true;
 
+    private static final Double DEFAULT_ELECTRICITY_UNIT = 1D;
+    private static final Double UPDATED_ELECTRICITY_UNIT = 2D;
+
     private static final String ENTITY_API_URL = "/api/generate-bills";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,7 +63,20 @@ class GenerateBillResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static GenerateBill createEntity(EntityManager em) {
-        GenerateBill generateBill = new GenerateBill().amountPending(DEFAULT_AMOUNT_PENDING).sendNotification(DEFAULT_SEND_NOTIFICATION);
+        GenerateBill generateBill = new GenerateBill()
+            .amountPending(DEFAULT_AMOUNT_PENDING)
+            .sendNotification(DEFAULT_SEND_NOTIFICATION)
+            .electricityUnit(DEFAULT_ELECTRICITY_UNIT);
+        // Add required entity
+        Tenant tenant;
+        if (TestUtil.findAll(em, Tenant.class).isEmpty()) {
+            tenant = TenantResourceIT.createEntity(em);
+            em.persist(tenant);
+            em.flush();
+        } else {
+            tenant = TestUtil.findAll(em, Tenant.class).get(0);
+        }
+        generateBill.setTenant(tenant);
         return generateBill;
     }
 
@@ -70,7 +87,20 @@ class GenerateBillResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static GenerateBill createUpdatedEntity(EntityManager em) {
-        GenerateBill generateBill = new GenerateBill().amountPending(UPDATED_AMOUNT_PENDING).sendNotification(UPDATED_SEND_NOTIFICATION);
+        GenerateBill generateBill = new GenerateBill()
+            .amountPending(UPDATED_AMOUNT_PENDING)
+            .sendNotification(UPDATED_SEND_NOTIFICATION)
+            .electricityUnit(UPDATED_ELECTRICITY_UNIT);
+        // Add required entity
+        Tenant tenant;
+        if (TestUtil.findAll(em, Tenant.class).isEmpty()) {
+            tenant = TenantResourceIT.createUpdatedEntity(em);
+            em.persist(tenant);
+            em.flush();
+        } else {
+            tenant = TestUtil.findAll(em, Tenant.class).get(0);
+        }
+        generateBill.setTenant(tenant);
         return generateBill;
     }
 
@@ -94,6 +124,7 @@ class GenerateBillResourceIT {
         GenerateBill testGenerateBill = generateBillList.get(generateBillList.size() - 1);
         assertThat(testGenerateBill.getAmountPending()).isEqualTo(DEFAULT_AMOUNT_PENDING);
         assertThat(testGenerateBill.getSendNotification()).isEqualTo(DEFAULT_SEND_NOTIFICATION);
+        assertThat(testGenerateBill.getElectricityUnit()).isEqualTo(DEFAULT_ELECTRICITY_UNIT);
     }
 
     @Test
@@ -127,7 +158,8 @@ class GenerateBillResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(generateBill.getId().intValue())))
             .andExpect(jsonPath("$.[*].amountPending").value(hasItem(DEFAULT_AMOUNT_PENDING.doubleValue())))
-            .andExpect(jsonPath("$.[*].sendNotification").value(hasItem(DEFAULT_SEND_NOTIFICATION.booleanValue())));
+            .andExpect(jsonPath("$.[*].sendNotification").value(hasItem(DEFAULT_SEND_NOTIFICATION.booleanValue())))
+            .andExpect(jsonPath("$.[*].electricityUnit").value(hasItem(DEFAULT_ELECTRICITY_UNIT.doubleValue())));
     }
 
     @Test
@@ -143,7 +175,8 @@ class GenerateBillResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(generateBill.getId().intValue()))
             .andExpect(jsonPath("$.amountPending").value(DEFAULT_AMOUNT_PENDING.doubleValue()))
-            .andExpect(jsonPath("$.sendNotification").value(DEFAULT_SEND_NOTIFICATION.booleanValue()));
+            .andExpect(jsonPath("$.sendNotification").value(DEFAULT_SEND_NOTIFICATION.booleanValue()))
+            .andExpect(jsonPath("$.electricityUnit").value(DEFAULT_ELECTRICITY_UNIT.doubleValue()));
     }
 
     @Test
@@ -165,7 +198,10 @@ class GenerateBillResourceIT {
         GenerateBill updatedGenerateBill = generateBillRepository.findById(generateBill.getId()).get();
         // Disconnect from session so that the updates on updatedGenerateBill are not directly saved in db
         em.detach(updatedGenerateBill);
-        updatedGenerateBill.amountPending(UPDATED_AMOUNT_PENDING).sendNotification(UPDATED_SEND_NOTIFICATION);
+        updatedGenerateBill
+            .amountPending(UPDATED_AMOUNT_PENDING)
+            .sendNotification(UPDATED_SEND_NOTIFICATION)
+            .electricityUnit(UPDATED_ELECTRICITY_UNIT);
 
         restGenerateBillMockMvc
             .perform(
@@ -181,6 +217,7 @@ class GenerateBillResourceIT {
         GenerateBill testGenerateBill = generateBillList.get(generateBillList.size() - 1);
         assertThat(testGenerateBill.getAmountPending()).isEqualTo(UPDATED_AMOUNT_PENDING);
         assertThat(testGenerateBill.getSendNotification()).isEqualTo(UPDATED_SEND_NOTIFICATION);
+        assertThat(testGenerateBill.getElectricityUnit()).isEqualTo(UPDATED_ELECTRICITY_UNIT);
     }
 
     @Test
@@ -267,6 +304,7 @@ class GenerateBillResourceIT {
         GenerateBill testGenerateBill = generateBillList.get(generateBillList.size() - 1);
         assertThat(testGenerateBill.getAmountPending()).isEqualTo(UPDATED_AMOUNT_PENDING);
         assertThat(testGenerateBill.getSendNotification()).isEqualTo(DEFAULT_SEND_NOTIFICATION);
+        assertThat(testGenerateBill.getElectricityUnit()).isEqualTo(DEFAULT_ELECTRICITY_UNIT);
     }
 
     @Test
@@ -281,7 +319,10 @@ class GenerateBillResourceIT {
         GenerateBill partialUpdatedGenerateBill = new GenerateBill();
         partialUpdatedGenerateBill.setId(generateBill.getId());
 
-        partialUpdatedGenerateBill.amountPending(UPDATED_AMOUNT_PENDING).sendNotification(UPDATED_SEND_NOTIFICATION);
+        partialUpdatedGenerateBill
+            .amountPending(UPDATED_AMOUNT_PENDING)
+            .sendNotification(UPDATED_SEND_NOTIFICATION)
+            .electricityUnit(UPDATED_ELECTRICITY_UNIT);
 
         restGenerateBillMockMvc
             .perform(
@@ -297,6 +338,7 @@ class GenerateBillResourceIT {
         GenerateBill testGenerateBill = generateBillList.get(generateBillList.size() - 1);
         assertThat(testGenerateBill.getAmountPending()).isEqualTo(UPDATED_AMOUNT_PENDING);
         assertThat(testGenerateBill.getSendNotification()).isEqualTo(UPDATED_SEND_NOTIFICATION);
+        assertThat(testGenerateBill.getElectricityUnit()).isEqualTo(UPDATED_ELECTRICITY_UNIT);
     }
 
     @Test

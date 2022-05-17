@@ -10,10 +10,10 @@ import { TenantService } from '../service/tenant.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { IGenerateBill } from 'app/entities/generate-bill/generate-bill.model';
-import { GenerateBillService } from 'app/entities/generate-bill/service/generate-bill.service';
 import { ILocation } from 'app/entities/location/location.model';
 import { LocationService } from 'app/entities/location/service/location.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 
 @Component({
   selector: 'jhi-tenant-update',
@@ -22,8 +22,8 @@ import { LocationService } from 'app/entities/location/service/location.service'
 export class TenantUpdateComponent implements OnInit {
   isSaving = false;
 
-  tenantsCollection: IGenerateBill[] = [];
   locationsCollection: ILocation[] = [];
+  usersSharedCollection: IUser[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -43,16 +43,16 @@ export class TenantUpdateComponent implements OnInit {
     outStandingAmount: [],
     monthEndCalculation: [],
     calculateOnDate: [],
-    tenant: [],
     location: [],
+    user: [],
   });
 
   constructor(
     protected dataUtils: DataUtils,
     protected eventManager: EventManager,
     protected tenantService: TenantService,
-    protected generateBillService: GenerateBillService,
     protected locationService: LocationService,
+    protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -94,11 +94,11 @@ export class TenantUpdateComponent implements OnInit {
     }
   }
 
-  trackGenerateBillById(_index: number, item: IGenerateBill): number {
+  trackLocationById(_index: number, item: ILocation): number {
     return item.id!;
   }
 
-  trackLocationById(_index: number, item: ILocation): number {
+  trackUserById(_index: number, item: IUser): number {
     return item.id!;
   }
 
@@ -140,25 +140,15 @@ export class TenantUpdateComponent implements OnInit {
       outStandingAmount: tenant.outStandingAmount,
       monthEndCalculation: tenant.monthEndCalculation,
       calculateOnDate: tenant.calculateOnDate,
-      tenant: tenant.tenant,
       location: tenant.location,
+      user: tenant.user,
     });
 
-    this.tenantsCollection = this.generateBillService.addGenerateBillToCollectionIfMissing(this.tenantsCollection, tenant.tenant);
     this.locationsCollection = this.locationService.addLocationToCollectionIfMissing(this.locationsCollection, tenant.location);
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, tenant.user);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.generateBillService
-      .query({ filter: 'tenant-is-null' })
-      .pipe(map((res: HttpResponse<IGenerateBill[]>) => res.body ?? []))
-      .pipe(
-        map((generateBills: IGenerateBill[]) =>
-          this.generateBillService.addGenerateBillToCollectionIfMissing(generateBills, this.editForm.get('tenant')!.value)
-        )
-      )
-      .subscribe((generateBills: IGenerateBill[]) => (this.tenantsCollection = generateBills));
-
     this.locationService
       .query({ filter: 'tenant-is-null' })
       .pipe(map((res: HttpResponse<ILocation[]>) => res.body ?? []))
@@ -168,6 +158,12 @@ export class TenantUpdateComponent implements OnInit {
         )
       )
       .subscribe((locations: ILocation[]) => (this.locationsCollection = locations));
+
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 
   protected createFromForm(): ITenant {
@@ -190,8 +186,8 @@ export class TenantUpdateComponent implements OnInit {
       outStandingAmount: this.editForm.get(['outStandingAmount'])!.value,
       monthEndCalculation: this.editForm.get(['monthEndCalculation'])!.value,
       calculateOnDate: this.editForm.get(['calculateOnDate'])!.value,
-      tenant: this.editForm.get(['tenant'])!.value,
       location: this.editForm.get(['location'])!.value,
+      user: this.editForm.get(['user'])!.value,
     };
   }
 }

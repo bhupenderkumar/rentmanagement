@@ -8,16 +8,16 @@
     -->
     <changeSet id="20220517155032-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="tenant_id"
-                                 baseTableName="tenant"
-                                 constraintName="fk_tenant__tenant_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="generate_bill"/>
-
         <addForeignKeyConstraint baseColumnNames="location_id"
                                  baseTableName="tenant"
                                  constraintName="fk_tenant__location_id"
                                  referencedColumnNames="id"
                                  referencedTableName="location"/>
+
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="tenant"
+                                 constraintName="fk_tenant__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
     </changeSet>
 </databaseChangeLog>

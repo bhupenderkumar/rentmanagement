@@ -71,10 +71,10 @@ describe('Room Management Update Component', () => {
 
     it('Should call Tenant query and add missing value', () => {
       const room: IRoom = { id: 456 };
-      const tenants: ITenant = { id: 77577 };
+      const tenants: ITenant = { id: 69795 };
       room.tenants = tenants;
 
-      const tenantCollection: ITenant[] = [{ id: 49744 }];
+      const tenantCollection: ITenant[] = [{ id: 81486 }];
       jest.spyOn(tenantService, 'query').mockReturnValue(of(new HttpResponse({ body: tenantCollection })));
       const additionalTenants = [tenants];
       const expectedCollection: ITenant[] = [...additionalTenants, ...tenantCollection];
@@ -92,7 +92,7 @@ describe('Room Management Update Component', () => {
       const room: IRoom = { id: 456 };
       const building: IBuilding = { id: 73329 };
       room.building = building;
-      const tenants: ITenant = { id: 12798 };
+      const tenants: ITenant = { id: 31602 };
       room.tenants = tenants;
 
       activatedRoute.data = of({ room });

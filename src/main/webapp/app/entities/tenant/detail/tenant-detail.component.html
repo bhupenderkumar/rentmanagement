@@ -77,17 +77,15 @@
         <dd>
           <span>{{ tenant.calculateOnDate }}</span>
         </dd>
-        <dt><span jhiTranslate="rentmanagementApp.tenant.tenant">Tenant</span></dt>
-        <dd>
-          <div *ngIf="tenant.tenant">
-            <a [routerLink]="['/generate-bill', tenant.tenant?.id, 'view']">{{ tenant.tenant?.id }}</a>
-          </div>
-        </dd>
         <dt><span jhiTranslate="rentmanagementApp.tenant.location">Location</span></dt>
         <dd>
           <div *ngIf="tenant.location">
             <a [routerLink]="['/location', tenant.location?.id, 'view']">{{ tenant.location?.id }}</a>
           </div>
+        </dd>
+        <dt><span jhiTranslate="rentmanagementApp.tenant.user">User</span></dt>
+        <dd>
+          <span>{{ tenant.user?.login }}</span>
         </dd>
       </dl>
 

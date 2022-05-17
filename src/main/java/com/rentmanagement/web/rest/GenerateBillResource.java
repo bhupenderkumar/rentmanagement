@@ -8,8 +8,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +48,7 @@ public class GenerateBillResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/generate-bills")
-    public ResponseEntity<GenerateBill> createGenerateBill(@RequestBody GenerateBill generateBill) throws URISyntaxException {
+    public ResponseEntity<GenerateBill> createGenerateBill(@Valid @RequestBody GenerateBill generateBill) throws URISyntaxException {
         log.debug("REST request to save GenerateBill : {}", generateBill);
         if (generateBill.getId() != null) {
             throw new BadRequestAlertException("A new generateBill cannot already have an ID", ENTITY_NAME, "idexists");
@@ -73,7 +73,7 @@ public class GenerateBillResource {
     @PutMapping("/generate-bills/{id}")
     public ResponseEntity<GenerateBill> updateGenerateBill(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody GenerateBill generateBill
+        @Valid @RequestBody GenerateBill generateBill
     ) throws URISyntaxException {
         log.debug("REST request to update GenerateBill : {}, {}", id, generateBill);
         if (generateBill.getId() == null) {
@@ -108,7 +108,7 @@ public class GenerateBillResource {
     @PatchMapping(value = "/generate-bills/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<GenerateBill> partialUpdateGenerateBill(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody GenerateBill generateBill
+        @NotNull @RequestBody GenerateBill generateBill
     ) throws URISyntaxException {
         log.debug("REST request to partial update GenerateBill partially : {}, {}", id, generateBill);
         if (generateBill.getId() == null) {
@@ -131,6 +131,9 @@ public class GenerateBillResource {
                 if (generateBill.getSendNotification() != null) {
                     existingGenerateBill.setSendNotification(generateBill.getSendNotification());
                 }
+                if (generateBill.getElectricityUnit() != null) {
+                    existingGenerateBill.setElectricityUnit(generateBill.getElectricityUnit());
+                }
 
                 return existingGenerateBill;
             })
@@ -145,18 +148,10 @@ public class GenerateBillResource {
     /**
      * {@code GET  /generate-bills} : get all the generateBills.
      *
-     * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of generateBills in body.
      */
     @GetMapping("/generate-bills")
-    public List<GenerateBill> getAllGenerateBills(@RequestParam(required = false) String filter) {
-        if ("tenant-is-null".equals(filter)) {
-            log.debug("REST request to get all GenerateBills where tenant is null");
-            return StreamSupport
-                .stream(generateBillRepository.findAll().spliterator(), false)
-                .filter(generateBill -> generateBill.getTenant() == null)
-                .collect(Collectors.toList());
-        }
+    public List<GenerateBill> getAllGenerateBills() {
         log.debug("REST request to get all GenerateBills");
         return generateBillRepository.findAll();
     }

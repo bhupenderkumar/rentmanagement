@@ -33,9 +33,10 @@
       "outStandingAmount": "Out Standing Amount",
       "monthEndCalculation": "Month End Calculation",
       "calculateOnDate": "Calculate On Date",
-      "tenant": "Tenant",
       "location": "Location",
-      "rooms": "Rooms"
+      "rooms": "Rooms",
+      "generateBill": "Generate Bill",
+      "user": "User"
     }
   }
 }

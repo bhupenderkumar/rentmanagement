@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity GenerateBill.
+    -->
+    <changeSet id="20220517165749-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="tenant_id"
+                                 baseTableName="generate_bill"
+                                 constraintName="fk_generate_bill__tenant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant"/>
+    </changeSet>
+</databaseChangeLog>

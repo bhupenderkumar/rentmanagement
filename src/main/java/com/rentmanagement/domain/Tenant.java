@@ -21,8 +21,6 @@ public class Tenant implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
 
@@ -83,11 +81,6 @@ public class Tenant implements Serializable {
     @Column(name = "calculate_on_date")
     private Boolean calculateOnDate;
 
-    @JsonIgnoreProperties(value = { "tenant" }, allowSetters = true)
-    @OneToOne
-    @JoinColumn(unique = true)
-    private GenerateBill tenant;
-
     @OneToOne
     @JoinColumn(unique = true)
     private Location location;
@@ -96,6 +89,16 @@ public class Tenant implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "building", "tenants" }, allowSetters = true)
     private Set<Room> rooms = new HashSet<>();
+
+    @OneToMany(mappedBy = "tenant")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "tenant" }, allowSetters = true)
+    private Set<GenerateBill> generateBills = new HashSet<>();
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -320,19 +323,6 @@ public class Tenant implements Serializable {
         this.calculateOnDate = calculateOnDate;
     }
 
-    public GenerateBill getTenant() {
-        return this.tenant;
-    }
-
-    public void setTenant(GenerateBill generateBill) {
-        this.tenant = generateBill;
-    }
-
-    public Tenant tenant(GenerateBill generateBill) {
-        this.setTenant(generateBill);
-        return this;
-    }
-
     public Location getLocation() {
         return this.location;
     }
@@ -374,6 +364,50 @@ public class Tenant implements Serializable {
     public Tenant removeRooms(Room room) {
         this.rooms.remove(room);
         room.setTenants(null);
+        return this;
+    }
+
+    public Set<GenerateBill> getGenerateBills() {
+        return this.generateBills;
+    }
+
+    public void setGenerateBills(Set<GenerateBill> generateBills) {
+        if (this.generateBills != null) {
+            this.generateBills.forEach(i -> i.setTenant(null));
+        }
+        if (generateBills != null) {
+            generateBills.forEach(i -> i.setTenant(this));
+        }
+        this.generateBills = generateBills;
+    }
+
+    public Tenant generateBills(Set<GenerateBill> generateBills) {
+        this.setGenerateBills(generateBills);
+        return this;
+    }
+
+    public Tenant addGenerateBill(GenerateBill generateBill) {
+        this.generateBills.add(generateBill);
+        generateBill.setTenant(this);
+        return this;
+    }
+
+    public Tenant removeGenerateBill(GenerateBill generateBill) {
+        this.generateBills.remove(generateBill);
+        generateBill.setTenant(null);
+        return this;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Tenant user(User user) {
+        this.setUser(user);
         return this;
     }
 

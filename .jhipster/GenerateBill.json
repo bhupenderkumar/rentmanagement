@@ -12,6 +12,10 @@
     {
       "fieldName": "sendNotification",
       "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "electricityUnit",
+      "fieldType": "Double"
     }
   ],
   "fluentMethods": true,
@@ -22,10 +26,10 @@
   "relationships": [
     {
       "otherEntityName": "tenant",
-      "otherEntityRelationshipName": "tenant",
-      "ownerSide": false,
+      "otherEntityRelationshipName": "generateBill",
       "relationshipName": "tenant",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
   ],
   "service": "no"
