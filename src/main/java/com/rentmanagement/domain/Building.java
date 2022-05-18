@@ -29,10 +29,9 @@ public class Building implements Serializable {
     @Column(name = "building_name", nullable = false)
     private String buildingName;
 
-    @OneToOne(optional = false)
-    @NotNull
+    @OneToOne
     @JoinColumn(unique = true)
-    private Location addressId;
+    private Location address;
 
     @OneToMany(mappedBy = "building")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -67,16 +66,16 @@ public class Building implements Serializable {
         this.buildingName = buildingName;
     }
 
-    public Location getAddressId() {
-        return this.addressId;
+    public Location getAddress() {
+        return this.address;
     }
 
-    public void setAddressId(Location location) {
-        this.addressId = location;
+    public void setAddress(Location location) {
+        this.address = location;
     }
 
-    public Building addressId(Location location) {
-        this.setAddressId(location);
+    public Building address(Location location) {
+        this.setAddress(location);
         return this;
     }
 

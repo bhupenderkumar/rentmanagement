@@ -2,32 +2,23 @@ package com.rentmanagement.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.rentmanagement.IntegrationTest;
 import com.rentmanagement.domain.Room;
 import com.rentmanagement.domain.Tenant;
-import com.rentmanagement.domain.User;
 import com.rentmanagement.repository.TenantRepository;
-import com.rentmanagement.repository.UserRepository;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +29,6 @@ import org.springframework.util.Base64Utils;
  * Integration tests for the {@link TenantResource} REST controller.
  */
 @IntegrationTest
-@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class TenantResourceIT {
@@ -90,6 +80,9 @@ class TenantResourceIT {
     private static final Boolean DEFAULT_CALCULATE_ON_DATE = false;
     private static final Boolean UPDATED_CALCULATE_ON_DATE = true;
 
+    private static final Boolean DEFAULT_CALCULATED_FOR_CURRENT_MONTH = false;
+    private static final Boolean UPDATED_CALCULATED_FOR_CURRENT_MONTH = true;
+
     private static final String ENTITY_API_URL = "/api/tenants";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -98,12 +91,6 @@ class TenantResourceIT {
 
     @Autowired
     private TenantRepository tenantRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Mock
-    private TenantRepository tenantRepositoryMock;
 
     @Autowired
     private EntityManager em;
@@ -136,7 +123,8 @@ class TenantResourceIT {
             .emergencyContactNumber(DEFAULT_EMERGENCY_CONTACT_NUMBER)
             .outStandingAmount(DEFAULT_OUT_STANDING_AMOUNT)
             .monthEndCalculation(DEFAULT_MONTH_END_CALCULATION)
-            .calculateOnDate(DEFAULT_CALCULATE_ON_DATE);
+            .calculateOnDate(DEFAULT_CALCULATE_ON_DATE)
+            .calculatedForCurrentMonth(DEFAULT_CALCULATED_FOR_CURRENT_MONTH);
         // Add required entity
         Room room;
         if (TestUtil.findAll(em, Room.class).isEmpty()) {
@@ -147,11 +135,6 @@ class TenantResourceIT {
             room = TestUtil.findAll(em, Room.class).get(0);
         }
         tenant.getRooms().add(room);
-        // Add required entity
-        User user = UserResourceIT.createEntity(em);
-        em.persist(user);
-        em.flush();
-        tenant.setUser(user);
         return tenant;
     }
 
@@ -178,18 +161,18 @@ class TenantResourceIT {
             .emergencyContactNumber(UPDATED_EMERGENCY_CONTACT_NUMBER)
             .outStandingAmount(UPDATED_OUT_STANDING_AMOUNT)
             .monthEndCalculation(UPDATED_MONTH_END_CALCULATION)
-            .calculateOnDate(UPDATED_CALCULATE_ON_DATE);
+            .calculateOnDate(UPDATED_CALCULATE_ON_DATE)
+            .calculatedForCurrentMonth(UPDATED_CALCULATED_FOR_CURRENT_MONTH);
         // Add required entity
         Room room;
-        room = RoomResourceIT.createUpdatedEntity(em);
-        em.persist(room);
-        em.flush();
+        if (TestUtil.findAll(em, Room.class).isEmpty()) {
+            room = RoomResourceIT.createUpdatedEntity(em);
+            em.persist(room);
+            em.flush();
+        } else {
+            room = TestUtil.findAll(em, Room.class).get(0);
+        }
         tenant.getRooms().add(room);
-        // Add required entity
-        User user = UserResourceIT.createEntity(em);
-        em.persist(user);
-        em.flush();
-        tenant.setUser(user);
         return tenant;
     }
 
@@ -227,9 +210,7 @@ class TenantResourceIT {
         assertThat(testTenant.getOutStandingAmount()).isEqualTo(DEFAULT_OUT_STANDING_AMOUNT);
         assertThat(testTenant.getMonthEndCalculation()).isEqualTo(DEFAULT_MONTH_END_CALCULATION);
         assertThat(testTenant.getCalculateOnDate()).isEqualTo(DEFAULT_CALCULATE_ON_DATE);
-
-        // Validate the id for MapsId, the ids must be same
-        assertThat(testTenant.getId()).isEqualTo(testTenant.getUser().getId());
+        assertThat(testTenant.getCalculatedForCurrentMonth()).isEqualTo(DEFAULT_CALCULATED_FOR_CURRENT_MONTH);
     }
 
     @Test
@@ -248,41 +229,6 @@ class TenantResourceIT {
         // Validate the Tenant in the database
         List<Tenant> tenantList = tenantRepository.findAll();
         assertThat(tenantList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void updateTenantMapsIdAssociationWithNewId() throws Exception {
-        // Initialize the database
-        tenantRepository.saveAndFlush(tenant);
-        int databaseSizeBeforeCreate = tenantRepository.findAll().size();
-
-        // Load the tenant
-        Tenant updatedTenant = tenantRepository.findById(tenant.getId()).get();
-        assertThat(updatedTenant).isNotNull();
-        // Disconnect from session so that the updates on updatedTenant are not directly saved in db
-        em.detach(updatedTenant);
-
-        // Update the User with new association value
-        updatedTenant.setUser(tenant.getUser());
-
-        // Update the entity
-        restTenantMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedTenant.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedTenant))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the Tenant in the database
-        List<Tenant> tenantList = tenantRepository.findAll();
-        assertThat(tenantList).hasSize(databaseSizeBeforeCreate);
-        Tenant testTenant = tenantList.get(tenantList.size() - 1);
-        // Validate the id for MapsId, the ids must be same
-        // Uncomment the following line for assertion. However, please note that there is a known issue and uncommenting will fail the test.
-        // Please look at https://github.com/jhipster/generator-jhipster/issues/9100. You can modify this test as necessary.
-        // assertThat(testTenant.getId()).isEqualTo(testTenant.getUser().getId());
     }
 
     @Test
@@ -414,25 +360,8 @@ class TenantResourceIT {
             .andExpect(jsonPath("$.[*].emergencyContactNumber").value(hasItem(DEFAULT_EMERGENCY_CONTACT_NUMBER)))
             .andExpect(jsonPath("$.[*].outStandingAmount").value(hasItem(DEFAULT_OUT_STANDING_AMOUNT.doubleValue())))
             .andExpect(jsonPath("$.[*].monthEndCalculation").value(hasItem(DEFAULT_MONTH_END_CALCULATION.booleanValue())))
-            .andExpect(jsonPath("$.[*].calculateOnDate").value(hasItem(DEFAULT_CALCULATE_ON_DATE.booleanValue())));
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllTenantsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(tenantRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restTenantMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(tenantRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllTenantsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(tenantRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restTenantMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(tenantRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+            .andExpect(jsonPath("$.[*].calculateOnDate").value(hasItem(DEFAULT_CALCULATE_ON_DATE.booleanValue())))
+            .andExpect(jsonPath("$.[*].calculatedForCurrentMonth").value(hasItem(DEFAULT_CALCULATED_FOR_CURRENT_MONTH.booleanValue())));
     }
 
     @Test
@@ -462,7 +391,8 @@ class TenantResourceIT {
             .andExpect(jsonPath("$.emergencyContactNumber").value(DEFAULT_EMERGENCY_CONTACT_NUMBER))
             .andExpect(jsonPath("$.outStandingAmount").value(DEFAULT_OUT_STANDING_AMOUNT.doubleValue()))
             .andExpect(jsonPath("$.monthEndCalculation").value(DEFAULT_MONTH_END_CALCULATION.booleanValue()))
-            .andExpect(jsonPath("$.calculateOnDate").value(DEFAULT_CALCULATE_ON_DATE.booleanValue()));
+            .andExpect(jsonPath("$.calculateOnDate").value(DEFAULT_CALCULATE_ON_DATE.booleanValue()))
+            .andExpect(jsonPath("$.calculatedForCurrentMonth").value(DEFAULT_CALCULATED_FOR_CURRENT_MONTH.booleanValue()));
     }
 
     @Test
@@ -500,7 +430,8 @@ class TenantResourceIT {
             .emergencyContactNumber(UPDATED_EMERGENCY_CONTACT_NUMBER)
             .outStandingAmount(UPDATED_OUT_STANDING_AMOUNT)
             .monthEndCalculation(UPDATED_MONTH_END_CALCULATION)
-            .calculateOnDate(UPDATED_CALCULATE_ON_DATE);
+            .calculateOnDate(UPDATED_CALCULATE_ON_DATE)
+            .calculatedForCurrentMonth(UPDATED_CALCULATED_FOR_CURRENT_MONTH);
 
         restTenantMockMvc
             .perform(
@@ -530,6 +461,7 @@ class TenantResourceIT {
         assertThat(testTenant.getOutStandingAmount()).isEqualTo(UPDATED_OUT_STANDING_AMOUNT);
         assertThat(testTenant.getMonthEndCalculation()).isEqualTo(UPDATED_MONTH_END_CALCULATION);
         assertThat(testTenant.getCalculateOnDate()).isEqualTo(UPDATED_CALCULATE_ON_DATE);
+        assertThat(testTenant.getCalculatedForCurrentMonth()).isEqualTo(UPDATED_CALCULATED_FOR_CURRENT_MONTH);
     }
 
     @Test
@@ -638,6 +570,7 @@ class TenantResourceIT {
         assertThat(testTenant.getOutStandingAmount()).isEqualTo(UPDATED_OUT_STANDING_AMOUNT);
         assertThat(testTenant.getMonthEndCalculation()).isEqualTo(UPDATED_MONTH_END_CALCULATION);
         assertThat(testTenant.getCalculateOnDate()).isEqualTo(DEFAULT_CALCULATE_ON_DATE);
+        assertThat(testTenant.getCalculatedForCurrentMonth()).isEqualTo(DEFAULT_CALCULATED_FOR_CURRENT_MONTH);
     }
 
     @Test
@@ -668,7 +601,8 @@ class TenantResourceIT {
             .emergencyContactNumber(UPDATED_EMERGENCY_CONTACT_NUMBER)
             .outStandingAmount(UPDATED_OUT_STANDING_AMOUNT)
             .monthEndCalculation(UPDATED_MONTH_END_CALCULATION)
-            .calculateOnDate(UPDATED_CALCULATE_ON_DATE);
+            .calculateOnDate(UPDATED_CALCULATE_ON_DATE)
+            .calculatedForCurrentMonth(UPDATED_CALCULATED_FOR_CURRENT_MONTH);
 
         restTenantMockMvc
             .perform(
@@ -698,6 +632,7 @@ class TenantResourceIT {
         assertThat(testTenant.getOutStandingAmount()).isEqualTo(UPDATED_OUT_STANDING_AMOUNT);
         assertThat(testTenant.getMonthEndCalculation()).isEqualTo(UPDATED_MONTH_END_CALCULATION);
         assertThat(testTenant.getCalculateOnDate()).isEqualTo(UPDATED_CALCULATE_ON_DATE);
+        assertThat(testTenant.getCalculatedForCurrentMonth()).isEqualTo(UPDATED_CALCULATED_FOR_CURRENT_MONTH);
     }
 
     @Test

@@ -12,8 +12,6 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { ILocation } from 'app/entities/location/location.model';
 import { LocationService } from 'app/entities/location/service/location.service';
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
 
 @Component({
   selector: 'jhi-tenant-update',
@@ -23,7 +21,6 @@ export class TenantUpdateComponent implements OnInit {
   isSaving = false;
 
   locationsCollection: ILocation[] = [];
-  usersSharedCollection: IUser[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -43,8 +40,8 @@ export class TenantUpdateComponent implements OnInit {
     outStandingAmount: [],
     monthEndCalculation: [],
     calculateOnDate: [],
+    calculatedForCurrentMonth: [],
     location: [],
-    user: [],
   });
 
   constructor(
@@ -52,7 +49,6 @@ export class TenantUpdateComponent implements OnInit {
     protected eventManager: EventManager,
     protected tenantService: TenantService,
     protected locationService: LocationService,
-    protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -98,10 +94,6 @@ export class TenantUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  trackUserById(_index: number, item: IUser): number {
-    return item.id!;
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITenant>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -140,12 +132,11 @@ export class TenantUpdateComponent implements OnInit {
       outStandingAmount: tenant.outStandingAmount,
       monthEndCalculation: tenant.monthEndCalculation,
       calculateOnDate: tenant.calculateOnDate,
+      calculatedForCurrentMonth: tenant.calculatedForCurrentMonth,
       location: tenant.location,
-      user: tenant.user,
     });
 
     this.locationsCollection = this.locationService.addLocationToCollectionIfMissing(this.locationsCollection, tenant.location);
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, tenant.user);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -158,12 +149,6 @@ export class TenantUpdateComponent implements OnInit {
         )
       )
       .subscribe((locations: ILocation[]) => (this.locationsCollection = locations));
-
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 
   protected createFromForm(): ITenant {
@@ -186,8 +171,8 @@ export class TenantUpdateComponent implements OnInit {
       outStandingAmount: this.editForm.get(['outStandingAmount'])!.value,
       monthEndCalculation: this.editForm.get(['monthEndCalculation'])!.value,
       calculateOnDate: this.editForm.get(['calculateOnDate'])!.value,
+      calculatedForCurrentMonth: this.editForm.get(['calculatedForCurrentMonth'])!.value,
       location: this.editForm.get(['location'])!.value,
-      user: this.editForm.get(['user'])!.value,
     };
   }
 }

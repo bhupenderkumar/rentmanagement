@@ -18,10 +18,10 @@
         <dd>
           <span>{{ building.buildingName }}</span>
         </dd>
-        <dt><span jhiTranslate="rentmanagementApp.building.addressId">Address Id</span></dt>
+        <dt><span jhiTranslate="rentmanagementApp.building.address">Address</span></dt>
         <dd>
-          <div *ngIf="building.addressId">
-            <a [routerLink]="['/location', building.addressId?.id, 'view']">{{ building.addressId?.id }}</a>
+          <div *ngIf="building.address">
+            <a [routerLink]="['/location', building.address?.id, 'view']">{{ building.address?.id }}</a>
           </div>
         </dd>
       </dl>

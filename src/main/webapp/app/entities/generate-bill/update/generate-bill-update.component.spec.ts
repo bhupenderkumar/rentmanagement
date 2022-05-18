@@ -48,10 +48,10 @@ describe('GenerateBill Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Tenant query and add missing value', () => {
       const generateBill: IGenerateBill = { id: 456 };
-      const tenant: ITenant = { id: 88236 };
+      const tenant: ITenant = { id: 43361 };
       generateBill.tenant = tenant;
 
-      const tenantCollection: ITenant[] = [{ id: 61812 }];
+      const tenantCollection: ITenant[] = [{ id: 82020 }];
       jest.spyOn(tenantService, 'query').mockReturnValue(of(new HttpResponse({ body: tenantCollection })));
       const additionalTenants = [tenant];
       const expectedCollection: ITenant[] = [...additionalTenants, ...tenantCollection];
@@ -67,7 +67,7 @@ describe('GenerateBill Management Update Component', () => {
 
     it('Should update editForm', () => {
       const generateBill: IGenerateBill = { id: 456 };
-      const tenant: ITenant = { id: 1375 };
+      const tenant: ITenant = { id: 16690 };
       generateBill.tenant = tenant;
 
       activatedRoute.data = of({ generateBill });

@@ -13,11 +13,5 @@
                                  constraintName="fk_tenant__location_id"
                                  referencedColumnNames="id"
                                  referencedTableName="location"/>
-
-        <addForeignKeyConstraint baseColumnNames="id"
-                                 baseTableName="tenant"
-                                 constraintName="fk_tenant__user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
     </changeSet>
 </databaseChangeLog>

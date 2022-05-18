@@ -41,6 +41,7 @@ describe('Tenant Service', () => {
       outStandingAmount: 0,
       monthEndCalculation: false,
       calculateOnDate: false,
+      calculatedForCurrentMonth: false,
     };
   });
 
@@ -102,6 +103,7 @@ describe('Tenant Service', () => {
           outStandingAmount: 1,
           monthEndCalculation: true,
           calculateOnDate: true,
+          calculatedForCurrentMonth: true,
         },
         elemDefault
       );
@@ -168,6 +170,7 @@ describe('Tenant Service', () => {
           outStandingAmount: 1,
           monthEndCalculation: true,
           calculateOnDate: true,
+          calculatedForCurrentMonth: true,
         },
         elemDefault
       );
@@ -224,7 +227,7 @@ describe('Tenant Service', () => {
       });
 
       it('should add only unique Tenant to an array', () => {
-        const tenantArray: ITenant[] = [{ id: 123 }, { id: 456 }, { id: 13905 }];
+        const tenantArray: ITenant[] = [{ id: 123 }, { id: 456 }, { id: 75314 }];
         const tenantCollection: ITenant[] = [{ id: 123 }];
         expectedResult = service.addTenantToCollectionIfMissing(tenantCollection, ...tenantArray);
         expect(expectedResult).toHaveLength(3);

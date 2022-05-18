@@ -46,34 +46,34 @@ describe('Building Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call addressId query and add missing value', () => {
+    it('Should call address query and add missing value', () => {
       const building: IBuilding = { id: 456 };
-      const addressId: ILocation = { id: 93471 };
-      building.addressId = addressId;
+      const address: ILocation = { id: 93471 };
+      building.address = address;
 
-      const addressIdCollection: ILocation[] = [{ id: 70967 }];
-      jest.spyOn(locationService, 'query').mockReturnValue(of(new HttpResponse({ body: addressIdCollection })));
-      const expectedCollection: ILocation[] = [addressId, ...addressIdCollection];
+      const addressCollection: ILocation[] = [{ id: 70967 }];
+      jest.spyOn(locationService, 'query').mockReturnValue(of(new HttpResponse({ body: addressCollection })));
+      const expectedCollection: ILocation[] = [address, ...addressCollection];
       jest.spyOn(locationService, 'addLocationToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ building });
       comp.ngOnInit();
 
       expect(locationService.query).toHaveBeenCalled();
-      expect(locationService.addLocationToCollectionIfMissing).toHaveBeenCalledWith(addressIdCollection, addressId);
-      expect(comp.addressIdsCollection).toEqual(expectedCollection);
+      expect(locationService.addLocationToCollectionIfMissing).toHaveBeenCalledWith(addressCollection, address);
+      expect(comp.addressesCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const building: IBuilding = { id: 456 };
-      const addressId: ILocation = { id: 9957 };
-      building.addressId = addressId;
+      const address: ILocation = { id: 9957 };
+      building.address = address;
 
       activatedRoute.data = of({ building });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(building));
-      expect(comp.addressIdsCollection).toContain(addressId);
+      expect(comp.addressesCollection).toContain(address);
     });
   });
 

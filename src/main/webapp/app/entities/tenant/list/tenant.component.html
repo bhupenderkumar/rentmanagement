@@ -48,8 +48,8 @@
           <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.outStandingAmount">Out Standing Amount</span></th>
           <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.monthEndCalculation">Month End Calculation</span></th>
           <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.calculateOnDate">Calculate On Date</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.calculatedForCurrentMonth">Calculated For Current Month</span></th>
           <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.location">Location</span></th>
-          <th scope="col"><span jhiTranslate="rentmanagementApp.tenant.user">User</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -81,13 +81,11 @@
           <td>{{ tenant.outStandingAmount }}</td>
           <td>{{ tenant.monthEndCalculation }}</td>
           <td>{{ tenant.calculateOnDate }}</td>
+          <td>{{ tenant.calculatedForCurrentMonth }}</td>
           <td>
             <div *ngIf="tenant.location">
               <a [routerLink]="['/location', tenant.location?.id, 'view']">{{ tenant.location?.id }}</a>
             </div>
-          </td>
-          <td>
-            {{ tenant.user?.login }}
           </td>
           <td class="text-end">
             <div class="btn-group">

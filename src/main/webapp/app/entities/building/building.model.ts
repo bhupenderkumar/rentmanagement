@@ -4,12 +4,12 @@ import { IRoom } from 'app/entities/room/room.model';
 export interface IBuilding {
   id?: number;
   buildingName?: string;
-  addressId?: ILocation;
+  address?: ILocation | null;
   buildings?: IRoom[];
 }
 
 export class Building implements IBuilding {
-  constructor(public id?: number, public buildingName?: string, public addressId?: ILocation, public buildings?: IRoom[]) {}
+  constructor(public id?: number, public buildingName?: string, public address?: ILocation | null, public buildings?: IRoom[]) {}
 }
 
 export function getBuildingIdentifier(building: IBuilding): number | undefined {

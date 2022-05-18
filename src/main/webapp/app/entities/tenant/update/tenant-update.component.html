@@ -368,6 +368,20 @@
         </div>
 
         <div class="row mb-3">
+          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.calculatedForCurrentMonth" for="field_calculatedForCurrentMonth"
+            >Calculated For Current Month</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="calculatedForCurrentMonth"
+            id="field_calculatedForCurrentMonth"
+            data-cy="calculatedForCurrentMonth"
+            formControlName="calculatedForCurrentMonth"
+          />
+        </div>
+
+        <div class="row mb-3">
           <label class="form-label" jhiTranslate="rentmanagementApp.tenant.location" for="field_location">Location</label>
           <select class="form-control" id="field_location" data-cy="location" name="location" formControlName="location">
             <option [ngValue]="null"></option>
@@ -376,19 +390,6 @@
               *ngFor="let locationOption of locationsCollection; trackBy: trackLocationById"
             >
               {{ locationOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="rentmanagementApp.tenant.user" for="field_user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
-              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
-            >
-              {{ userOption.login }}
             </option>
           </select>
         </div>

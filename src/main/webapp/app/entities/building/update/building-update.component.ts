@@ -17,12 +17,12 @@ import { LocationService } from 'app/entities/location/service/location.service'
 export class BuildingUpdateComponent implements OnInit {
   isSaving = false;
 
-  addressIdsCollection: ILocation[] = [];
+  addressesCollection: ILocation[] = [];
 
   editForm = this.fb.group({
     id: [],
     buildingName: [null, [Validators.required]],
-    addressId: [null, Validators.required],
+    address: [],
   });
 
   constructor(
@@ -81,10 +81,10 @@ export class BuildingUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: building.id,
       buildingName: building.buildingName,
-      addressId: building.addressId,
+      address: building.address,
     });
 
-    this.addressIdsCollection = this.locationService.addLocationToCollectionIfMissing(this.addressIdsCollection, building.addressId);
+    this.addressesCollection = this.locationService.addLocationToCollectionIfMissing(this.addressesCollection, building.address);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -93,10 +93,10 @@ export class BuildingUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ILocation[]>) => res.body ?? []))
       .pipe(
         map((locations: ILocation[]) =>
-          this.locationService.addLocationToCollectionIfMissing(locations, this.editForm.get('addressId')!.value)
+          this.locationService.addLocationToCollectionIfMissing(locations, this.editForm.get('address')!.value)
         )
       )
-      .subscribe((locations: ILocation[]) => (this.addressIdsCollection = locations));
+      .subscribe((locations: ILocation[]) => (this.addressesCollection = locations));
   }
 
   protected createFromForm(): IBuilding {
@@ -104,7 +104,7 @@ export class BuildingUpdateComponent implements OnInit {
       ...new Building(),
       id: this.editForm.get(['id'])!.value,
       buildingName: this.editForm.get(['buildingName'])!.value,
-      addressId: this.editForm.get(['addressId'])!.value,
+      address: this.editForm.get(['address'])!.value,
     };
   }
 }

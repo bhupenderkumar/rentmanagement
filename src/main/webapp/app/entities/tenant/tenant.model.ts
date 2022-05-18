@@ -2,7 +2,6 @@ import dayjs from 'dayjs/esm';
 import { ILocation } from 'app/entities/location/location.model';
 import { IRoom } from 'app/entities/room/room.model';
 import { IGenerateBill } from 'app/entities/generate-bill/generate-bill.model';
-import { IUser } from 'app/entities/user/user.model';
 
 export interface ITenant {
   id?: number;
@@ -22,10 +21,10 @@ export interface ITenant {
   outStandingAmount?: number | null;
   monthEndCalculation?: boolean | null;
   calculateOnDate?: boolean | null;
+  calculatedForCurrentMonth?: boolean | null;
   location?: ILocation | null;
   rooms?: IRoom[];
   generateBills?: IGenerateBill[] | null;
-  user?: IUser | null;
 }
 
 export class Tenant implements ITenant {
@@ -47,14 +46,15 @@ export class Tenant implements ITenant {
     public outStandingAmount?: number | null,
     public monthEndCalculation?: boolean | null,
     public calculateOnDate?: boolean | null,
+    public calculatedForCurrentMonth?: boolean | null,
     public location?: ILocation | null,
     public rooms?: IRoom[],
-    public generateBills?: IGenerateBill[] | null,
-    public user?: IUser | null
+    public generateBills?: IGenerateBill[] | null
   ) {
     this.sendNotification = this.sendNotification ?? false;
     this.monthEndCalculation = this.monthEndCalculation ?? false;
     this.calculateOnDate = this.calculateOnDate ?? false;
+    this.calculatedForCurrentMonth = this.calculatedForCurrentMonth ?? false;
   }
 }
 

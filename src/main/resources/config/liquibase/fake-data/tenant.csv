@@ -1,3 +1,11 @@
-id;tenant_name;address_proff;address_proff_content_type;numberof_family_members;phone_number;rent_start_date;rent_amount;electricity_unit_rate;starting_electricity_unit;any_other_details;send_notification;email_address;emergency_contact_number;out_standing_amount;month_end_calculation;calculate_on_date
-1;Representative;../fake-data/blob/hipster.png;image/png;63157;Avon harness;2022-05-17;91883;58700;33584;initiatives;true;Uzbekistan matrix Fresh;revolutionize;48928;true;false
-2;Practical olive;../fake-data/blob/hipster.png;image/png;7365;payment;2022-05-17;12230;1390;28366;Indiana;true;Rue Dynamic;interactive Fiji;25945;false;false
+id;tenant_name;address_proff;address_proff_content_type;numberof_family_members;phone_number;rent_start_date;rent_amount;electricity_unit_rate;starting_electricity_unit;any_other_details;send_notification;email_address;emergency_contact_number;out_standing_amount;month_end_calculation;calculate_on_date;calculated_for_current_month
+1;Representative;../fake-data/blob/hipster.png;image/png;63157;Avon harness;2022-05-17;91883;58700;33584;initiatives;true;Uzbekistan matrix Fresh;revolutionize;48928;true;false;true
+2;platforms;../fake-data/blob/hipster.png;image/png;66088;Gorgeous infrastructures content-based;2022-05-17;46072;82289;63638;program invoice;false;Developer database;Communications;18739;false;true;false
+3;Markets pixel;../fake-data/blob/hipster.png;image/png;34524;leverage;2022-05-16;84265;24924;44425;web-enabled Specialist IB;true;driver;front-end solution-oriented;3912;true;true;false
+4;orchestrate;../fake-data/blob/hipster.png;image/png;24198;Sports;2022-05-16;26627;47276;44481;clicks-and-mortar wireless Outdoors;true;Human Kazakhstan;Car Vermont;72313;true;false;false
+5;green Mauritius Mongolia;../fake-data/blob/hipster.png;image/png;89860;Steel Concrete white;2022-05-17;31491;76768;26241;Directives Comoros;true;scalable;Total productize;60994;true;true;false
+6;Computer Group IB;../fake-data/blob/hipster.png;image/png;70991;gold XML;2022-05-16;59577;8865;81029;Applications;true;payment Solutions circuit;Montserrat Ameliorated Inlet;63900;false;true;true
+7;enhance seamless Knolls;../fake-data/blob/hipster.png;image/png;49168;website;2022-05-17;77502;47293;32963;compressing and;false;client-driven Arizona;Sports Adaptive;45651;true;true;true
+8;digital implement redundant;../fake-data/blob/hipster.png;image/png;86705;user-centric envisioneer;2022-05-17;70295;96756;28569;Games;true;Orchestrator;value-added;41484;true;true;false
+9;Fresh transmitter;../fake-data/blob/hipster.png;image/png;52352;Supervisor transmitter;2022-05-16;18458;31746;98164;Branding Synergized Accountability;false;Facilitator;Cheese;23506;false;false;false
+10;Shirt Direct;../fake-data/blob/hipster.png;image/png;88924;Extended Synergized;2022-05-17;88784;30415;71571;Cotton;true;Cambridgeshire;Jamaica Ohio e-markets;36848;false;true;true

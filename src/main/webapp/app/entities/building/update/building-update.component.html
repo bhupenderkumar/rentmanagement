@@ -37,25 +37,16 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="rentmanagementApp.building.addressId" for="field_addressId">Address Id</label>
-          <select class="form-control" id="field_addressId" data-cy="addressId" name="addressId" formControlName="addressId">
-            <option *ngIf="editForm.get(['addressId'])!.value == null" [ngValue]="null" selected></option>
+          <label class="form-label" jhiTranslate="rentmanagementApp.building.address" for="field_address">Address</label>
+          <select class="form-control" id="field_address" data-cy="address" name="address" formControlName="address">
+            <option [ngValue]="null"></option>
             <option
-              [ngValue]="locationOption.id === editForm.get('addressId')!.value?.id ? editForm.get('addressId')!.value : locationOption"
-              *ngFor="let locationOption of addressIdsCollection; trackBy: trackLocationById"
+              [ngValue]="locationOption.id === editForm.get('address')!.value?.id ? editForm.get('address')!.value : locationOption"
+              *ngFor="let locationOption of addressesCollection; trackBy: trackLocationById"
             >
               {{ locationOption.id }}
             </option>
           </select>
-        </div>
-        <div *ngIf="editForm.get(['addressId'])!.invalid && (editForm.get(['addressId'])!.dirty || editForm.get(['addressId'])!.touched)">
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get(['addressId'])?.errors?.required"
-            jhiTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
         </div>
       </div>
 

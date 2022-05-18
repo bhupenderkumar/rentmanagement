@@ -34,7 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="rentmanagementApp.building.buildingName">Building Name</span></th>
-          <th scope="col"><span jhiTranslate="rentmanagementApp.building.addressId">Address Id</span></th>
+          <th scope="col"><span jhiTranslate="rentmanagementApp.building.address">Address</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,8 +45,8 @@
           </td>
           <td>{{ building.buildingName }}</td>
           <td>
-            <div *ngIf="building.addressId">
-              <a [routerLink]="['/location', building.addressId?.id, 'view']">{{ building.addressId?.id }}</a>
+            <div *ngIf="building.address">
+              <a [routerLink]="['/location', building.address?.id, 'view']">{{ building.address?.id }}</a>
             </div>
           </td>
           <td class="text-end">

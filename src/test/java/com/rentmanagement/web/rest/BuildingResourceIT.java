@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.rentmanagement.IntegrationTest;
 import com.rentmanagement.domain.Building;
-import com.rentmanagement.domain.Location;
 import com.rentmanagement.domain.Room;
 import com.rentmanagement.repository.BuildingRepository;
 import java.util.List;
@@ -60,16 +59,6 @@ class BuildingResourceIT {
     public static Building createEntity(EntityManager em) {
         Building building = new Building().buildingName(DEFAULT_BUILDING_NAME);
         // Add required entity
-        Location location;
-        if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createEntity(em);
-            em.persist(location);
-            em.flush();
-        } else {
-            location = TestUtil.findAll(em, Location.class).get(0);
-        }
-        building.setAddressId(location);
-        // Add required entity
         Room room;
         if (TestUtil.findAll(em, Room.class).isEmpty()) {
             room = RoomResourceIT.createEntity(em);
@@ -90,16 +79,6 @@ class BuildingResourceIT {
      */
     public static Building createUpdatedEntity(EntityManager em) {
         Building building = new Building().buildingName(UPDATED_BUILDING_NAME);
-        // Add required entity
-        Location location;
-        if (TestUtil.findAll(em, Location.class).isEmpty()) {
-            location = LocationResourceIT.createUpdatedEntity(em);
-            em.persist(location);
-            em.flush();
-        } else {
-            location = TestUtil.findAll(em, Location.class).get(0);
-        }
-        building.setAddressId(location);
         // Add required entity
         Room room;
         if (TestUtil.findAll(em, Room.class).isEmpty()) {

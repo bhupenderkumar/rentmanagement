@@ -5,14 +5,16 @@ entity Building {
 	buildingName String required 
 }
 relationship OneToMany{
+
   Building{buildings required} to Room{building required}
   Tenant{rooms required} to Room{tenants}
   Tenant to GenerateBill{tenant required}
 }
+
 relationship OneToOne{
   
   Tenant{location} to Location
-  Building{addressId required} to Location
+  Building{address} to Location
   
 }
 
@@ -50,6 +52,7 @@ entity Tenant{
    outStandingAmount Double 
    monthEndCalculation Boolean
    calculateOnDate Boolean
+   calculatedForCurrentMonth Boolean
    
 }
 entity GenerateBill {

@@ -33,10 +33,10 @@
       "outStandingAmount": "Out Standing Amount",
       "monthEndCalculation": "Month End Calculation",
       "calculateOnDate": "Calculate On Date",
+      "calculatedForCurrentMonth": "Calculated For Current Month",
       "location": "Location",
       "rooms": "Rooms",
-      "generateBill": "Generate Bill",
-      "user": "User"
+      "generateBill": "Generate Bill"
     }
   }
 }

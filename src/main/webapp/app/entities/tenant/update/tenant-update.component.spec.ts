@@ -11,9 +11,6 @@ import { ITenant, Tenant } from '../tenant.model';
 import { ILocation } from 'app/entities/location/location.model';
 import { LocationService } from 'app/entities/location/service/location.service';
 
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
-
 import { TenantUpdateComponent } from './tenant-update.component';
 
 describe('Tenant Management Update Component', () => {
@@ -22,7 +19,6 @@ describe('Tenant Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let tenantService: TenantService;
   let locationService: LocationService;
-  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +41,6 @@ describe('Tenant Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     tenantService = TestBed.inject(TenantService);
     locationService = TestBed.inject(LocationService);
-    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
@@ -69,38 +64,16 @@ describe('Tenant Management Update Component', () => {
       expect(comp.locationsCollection).toEqual(expectedCollection);
     });
 
-    it('Should call User query and add missing value', () => {
-      const tenant: ITenant = { id: 456 };
-      const user: IUser = { id: 29209 };
-      tenant.user = user;
-
-      const userCollection: IUser[] = [{ id: 78936 }];
-      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
-      const additionalUsers = [user];
-      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
-      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ tenant });
-      comp.ngOnInit();
-
-      expect(userService.query).toHaveBeenCalled();
-      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
-      expect(comp.usersSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const tenant: ITenant = { id: 456 };
       const location: ILocation = { id: 32001 };
       tenant.location = location;
-      const user: IUser = { id: 52572 };
-      tenant.user = user;
 
       activatedRoute.data = of({ tenant });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(tenant));
       expect(comp.locationsCollection).toContain(location);
-      expect(comp.usersSharedCollection).toContain(user);
     });
   });
 
@@ -173,14 +146,6 @@ describe('Tenant Management Update Component', () => {
       it('Should return tracked Location primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackLocationById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
-    });
-
-    describe('trackUserById', () => {
-      it('Should return tracked User primary key', () => {
-        const entity = { id: 123 };
-        const trackResult = comp.trackUserById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

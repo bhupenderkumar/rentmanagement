@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "buildingName": "Building Name",
-      "addressId": "Address Id",
+      "address": "Address",
       "buildings": "Buildings"
     }
   }

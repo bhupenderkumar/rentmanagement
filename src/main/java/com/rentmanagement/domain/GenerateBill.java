@@ -34,7 +34,7 @@ public class GenerateBill implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "location", "rooms", "generateBills", "user" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "location", "rooms", "generateBills" }, allowSetters = true)
     private Tenant tenant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

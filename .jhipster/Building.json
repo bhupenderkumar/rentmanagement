@@ -21,9 +21,8 @@
       "otherEntityName": "location",
       "otherEntityRelationshipName": "building",
       "ownerSide": true,
-      "relationshipName": "addressId",
-      "relationshipType": "one-to-one",
-      "relationshipValidateRules": "required"
+      "relationshipName": "address",
+      "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "room",
